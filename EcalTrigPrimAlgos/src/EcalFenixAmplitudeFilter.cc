@@ -5,7 +5,7 @@
 #include <SimCalorimetry/EcalTrigPrimAlgos/interface/EcalFenixAmplitudeFilter.h>
 #include <iostream>
 
-EcalFenixAmplitudeFilter::EcalFenixAmplitudeFilter() : inputsAlreadyIn_(0), stripid_{0}, shift_(6) {}
+EcalFenixAmplitudeFilter::EcalFenixAmplitudeFilter(bool debug) : inputsAlreadyIn_(0), stripid_{0}, shift_(6), debug_(debug) {}
 
 
 EcalFenixAmplitudeFilter::~EcalFenixAmplitudeFilter() {}
@@ -44,7 +44,9 @@ void EcalFenixAmplitudeFilter::process(std::vector<int> &addout,
   // test end
 
   for (unsigned int i = 0; i < addout.size(); i++) {
-    if (i>=4) std::cout<<i<<std::dec;//by  RK // need to add the boolean
+    if (i>=4){
+      if(debug_) std::cout<<i<<std::dec;//by  RK // need to add the boolean
+    } 
     setInput(addout[i], fgvbIn[i]);
     process();
     output[i] = processedOutput_;
@@ -72,27 +74,30 @@ void EcalFenixAmplitudeFilter::process() {
   int output = 0;
   int fgvbInt = 0;
 
-  std::cout<<" "<<stripid_;
+  if(debug_) std::cout<<" "<<stripid_;
   for (int i = 0; i < 5; i++) {
     output += (weights_[i] * buffer_[i]) >> shift_;
-    std::cout<<" "<<output<<std::dec;// by RK 
+    if(debug_) std::cout<<" "<<output<<std::dec;// by RK 
     if ((fgvbBuffer_[i] == 1 && i == 3) || fgvbInt == 1) {
       fgvbInt = 1;
     }
   }
 
   // by RK 
-  for (int i = 0; i < 5; i++) {
-    std::cout<<" "<<weights_[i]<<std::dec;}
-  for (int i = 0; i < 5; i++) {
-    std::cout<<" "<<weights_[i]/64.0<<std::dec;}
-  for (int i = 0; i < 5; i++) {
-    std::cout<<" "<<buffer_[i]<<std::dec;}
-  for (int i = 0; i < 5; i++) {
-    std::cout<<" "<<(weights_[i] * buffer_[i])<<std::dec;    
+  if(debug_){
+    for (int i = 0; i < 5; i++) {
+      std::cout<<" "<<weights_[i]<<std::dec;}
+    for (int i = 0; i < 5; i++) {
+      std::cout<<" "<<weights_[i]/64.0<<std::dec;}
+    for (int i = 0; i < 5; i++) {
+      std::cout<<" "<<buffer_[i]<<std::dec;}
+    for (int i = 0; i < 5; i++) {
+      std::cout<<" "<<(weights_[i] * buffer_[i])<<std::dec;    
+    }
+    std::cout<<std::endl;
+      // -- by RK 
   }
-  std::cout<<std::endl;
-    // -- by RK 
+
   
   
   if (output < 0)

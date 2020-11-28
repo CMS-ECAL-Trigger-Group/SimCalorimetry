@@ -23,6 +23,7 @@ private:
   int fgvbBuffer_[5];
   int weights_[5];
   int shift_;
+  bool debug_; 
   int setInput(int input, int fgvb);
   void process();
 
@@ -31,6 +32,7 @@ private:
 
 public:
   EcalFenixAmplitudeFilter();
+  EcalFenixAmplitudeFilter(bool debug);
   virtual ~EcalFenixAmplitudeFilter();
   virtual void process(std::vector<int> &addout,
                        std::vector<int> &output,

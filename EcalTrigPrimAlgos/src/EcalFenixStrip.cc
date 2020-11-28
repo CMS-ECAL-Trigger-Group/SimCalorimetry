@@ -19,7 +19,7 @@ EcalFenixStrip::EcalFenixStrip(const edm::EventSetup &setup,
   for (int i = 0; i < nbMaxXtals_; i++)
     linearizer_[i] = new EcalFenixLinearizer(famos_);
   adder_ = new EcalFenixEtStrip();
-  amplitude_filter_ = new EcalFenixAmplitudeFilter();
+  amplitude_filter_ = new EcalFenixAmplitudeFilter(debug);
   peak_finder_ = new EcalFenixPeakFinder();
   fenixFormatterEB_ = new EcalFenixStripFormatEB();
   fenixFormatterEE_ = new EcalFenixStripFormatEE();
