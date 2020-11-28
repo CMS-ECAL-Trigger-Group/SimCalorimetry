@@ -119,7 +119,12 @@ void EcalFenixOddAmplitudeFilter::process() {
 void EcalFenixOddAmplitudeFilter::setParameters(uint32_t raw,
                                              const EcalTPGWeightIdMap *ecaltpgWeightMap,
                                              const EcalTPGWeightGroup *ecaltpgWeightGroup) {
-  stripid_ = raw;    // by RK                                            
+  stripid_ = raw;    // by RK  
+                 
+  // Want to set Odd weights here 
+  // Can see from header files that even amplitude weights come from CondFormats --> conditions database?   
+  // For initial testing will load odd weights from text file 
+
   uint32_t params_[5];
   const EcalTPGGroups::EcalTPGGroupsMap &groupmap = ecaltpgWeightGroup->getMap();
   EcalTPGGroups::EcalTPGGroupsMapItr it = groupmap.find(raw);

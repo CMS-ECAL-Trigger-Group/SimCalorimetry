@@ -63,6 +63,9 @@ void EcalFenixStrip::process_part2_barrel(uint32_t stripid,
 
   // call formatter
   this->getFormatterEB()->setParameters(stripid, ecaltpgSlidW);
+  // Want to try setting Odd weights here 
+  
+
   this->getFormatterEB()->process(fgvb_out_, peak_out_, filt_out_, format_out_);
   // this is a test:
   if (debug_) {
