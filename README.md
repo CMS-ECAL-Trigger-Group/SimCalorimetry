@@ -12,4 +12,6 @@ Added cmssw/SimCalorimetry/EcalTrigPrimProducers with the following commands:
 	git cms-init 
 	git clone git@github.com:CMS-ECAL-Trigger-Group/ECALDoubleWeights.git -b CMSSW_11_0_2-OddWeightsDev
 	git cms-addpkg SimCalorimetry/EcalTrigPrimProducers
-
+	mv SimCalorimetry/ SimCalorimetry-cmssw
+        git clone -b Odd-Weights-Filter-Dev git@github.com:CMS-ECAL-Trigger-Group/SimCalorimetry.git
+        mv SimCalorimetry-cmssw/EcalTrigPrimProducers/ SimCalorimetry/ 
