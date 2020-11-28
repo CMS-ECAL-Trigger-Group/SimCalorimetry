@@ -2,14 +2,15 @@
 #include "CondFormats/EcalObjects/interface/EcalTPGWeightGroup.h"
 #include "CondFormats/EcalObjects/interface/EcalTPGWeightIdMap.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
-#include <SimCalorimetry/EcalTrigPrimAlgos/interface/EcalFenixAmplitudeFilter.h>
+#include <SimCalorimetry/EcalTrigPrimAlgos/interface/EcalFenixOddAmplitudeFilter.h>
 #include <iostream>
 
-EcalFenixAmplitudeFilter::EcalFenixAmplitudeFilter() : inputsAlreadyIn_(0), stripid_{0}, shift_(6) {}
+EcalFenixOddAmplitudeFilter::EcalFenixOddAmplitudeFilter(bool debug) : inputsAlreadyIn_(0), stripid_{0}, shift_(6), debug_(debug) {}
 
-EcalFenixAmplitudeFilter::~EcalFenixAmplitudeFilter() {}
 
-int EcalFenixAmplitudeFilter::setInput(int input, int fgvb) {
+EcalFenixOddAmplitudeFilter::~EcalFenixOddAmplitudeFilter() {}
+
+int EcalFenixOddAmplitudeFilter::setInput(int input, int fgvb) {
   if (input > 0X3FFFF) {
     std::cout << "ERROR IN INPUT OF AMPLITUDE FILTER" << std::endl;
     return -1;
@@ -29,7 +30,7 @@ int EcalFenixAmplitudeFilter::setInput(int input, int fgvb) {
   return 1;
 }
 
-void EcalFenixAmplitudeFilter::process(std::vector<int> &addout,
+void EcalFenixOddAmplitudeFilter::process(std::vector<int> &addout,
                                        std::vector<int> &output,
                                        std::vector<int> &fgvbIn,
                                        std::vector<int> &fgvbOut) {
@@ -43,7 +44,9 @@ void EcalFenixAmplitudeFilter::process(std::vector<int> &addout,
   // test end
 
   for (unsigned int i = 0; i < addout.size(); i++) {
-    if (i>=4) std::cout<<i<<std::dec;//by  RK
+    if (i>=4){
+      if(debug_) std::cout<<i<<std::dec;//by  RK // need to add the boolean
+    } 
     setInput(addout[i], fgvbIn[i]);
     process();
     output[i] = processedOutput_;
@@ -62,7 +65,7 @@ void EcalFenixAmplitudeFilter::process(std::vector<int> &addout,
   return;
 }
 
-void EcalFenixAmplitudeFilter::process() {
+void EcalFenixOddAmplitudeFilter::process() {
   // UB FIXME: 5
   processedOutput_ = 0;
   processedFgvbOutput_ = 0;
@@ -71,28 +74,38 @@ void EcalFenixAmplitudeFilter::process() {
   int output = 0;
   int fgvbInt = 0;
 
-  std::cout<<" "<<stripid_;
+  if(debug_) std::cout<<" "<<stripid_;
   for (int i = 0; i < 5; i++) {
     output += (weights_[i] * buffer_[i]) >> shift_;
-    std::cout<<" "<<output<<std::dec;// by RK 
+    if(debug_) std::cout<<" "<<output<<std::dec;// by RK 
     if ((fgvbBuffer_[i] == 1 && i == 3) || fgvbInt == 1) {
       fgvbInt = 1;
     }
   }
 
   // by RK 
-  for (int i = 0; i < 5; i++) {
-    std::cout<<" "<<weights_[i]<<std::dec;}
-  for (int i = 0; i < 5; i++) {
-    std::cout<<" "<<weights_[i]/64.0<<std::dec;}
-  for (int i = 0; i < 5; i++) {
-    std::cout<<" "<<buffer_[i]<<std::dec;}
-  for (int i = 0; i < 5; i++) {
-    std::cout<<" "<<(weights_[i] * buffer_[i])<<std::dec;    
+  if(debug_){
+    for (int i = 0; i < 5; i++) {
+      std::cout<<" "<<weights_[i]<<std::dec;}
+    for (int i = 0; i < 5; i++) {
+      std::cout<<" "<<weights_[i]/64.0<<std::dec;}
+    for (int i = 0; i < 5; i++) {
+      std::cout<<" "<<buffer_[i]<<std::dec;}
+    for (int i = 0; i < 5; i++) {
+      std::cout<<" "<<(weights_[i] * buffer_[i])<<std::dec;    
+    }
+    std::cout<<std::endl;
+      // -- by RK 
   }
-  std::cout<<std::endl;
-    // -- by RK 
-  
+
+  if(debug_){
+    std::cout << "*********" << std::endl; 
+    std::cout << "Weights" << std::endl;
+    for(int i = 0; i < 5; i++){
+      std::cout << "Weight " << i << " = " << weights_[i] << std::endl; 
+    }
+    std::cout << "*********" << std::endl; 
+  }
   
   if (output < 0)
     output = 0;
@@ -103,7 +116,7 @@ void EcalFenixAmplitudeFilter::process() {
   //std::cout<<" output after full processing: "<<output<<std::endl; // by RK 
 }
 
-void EcalFenixAmplitudeFilter::setParameters(uint32_t raw,
+void EcalFenixOddAmplitudeFilter::setParameters(uint32_t raw,
                                              const EcalTPGWeightIdMap *ecaltpgWeightMap,
                                              const EcalTPGWeightGroup *ecaltpgWeightGroup) {
   stripid_ = raw;    // by RK                                            

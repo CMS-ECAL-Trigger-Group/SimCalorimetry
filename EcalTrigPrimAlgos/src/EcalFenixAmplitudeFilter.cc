@@ -98,7 +98,14 @@ void EcalFenixAmplitudeFilter::process() {
       // -- by RK 
   }
 
-  
+  if(debug_){
+    std::cout << "*********" << std::endl; 
+    std::cout << "Weights" << std::endl;
+    for(int i = 0; i < 5; i++){
+      std::cout << "Weight " << i << " = " << weights_[i] << std::endl; 
+    }
+    std::cout << "*********" << std::endl; 
+  }
   
   if (output < 0)
     output = 0;
