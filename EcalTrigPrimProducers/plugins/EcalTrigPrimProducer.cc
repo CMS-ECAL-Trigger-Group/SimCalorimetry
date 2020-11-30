@@ -66,6 +66,7 @@ EcalTrigPrimProducer::EcalTrigPrimProducer(const edm::ParameterSet &iConfig)
       tcpFormat_(iConfig.getParameter<bool>("TcpOutput")),
       debug_(iConfig.getParameter<bool>("Debug")),
       oddWeightsTxtFile_(iConfig.getParameter<std::string>("oddWeightsTxtFile")),
+      TPinfoPrintout_(iConfig.getParameter<bool>("TPinfoPrintout")),
       famos_(iConfig.getParameter<bool>("Famos")),
       tokenEB_(consumes<EBDigiCollection>(
           edm::InputTag(iConfig.getParameter<std::string>("Label"), iConfig.getParameter<std::string>("InstanceEB")))),
@@ -125,7 +126,7 @@ void EcalTrigPrimProducer::beginRun(edm::Run const &run, edm::EventSetup const &
   // ProcessHistory is guaranteed to be constant for an entire Run
   binOfMaximum_ = findBinOfMaximum(fillBinOfMaximumFromHistory_, binOfMaximum_, run.processHistory());
 
-  algo_.reset(new EcalTrigPrimFunctionalAlgo(setup, binOfMaximum_, tcpFormat_, barrelOnly_, debug_, famos_, oddWeightsTxtFile_));
+  algo_.reset(new EcalTrigPrimFunctionalAlgo(setup, binOfMaximum_, tcpFormat_, barrelOnly_, debug_, famos_, oddWeightsTxtFile_,TPinfoPrintout_));
 
   // get a first version of the records
   cacheID_ = this->getRecords(setup);
@@ -325,5 +326,6 @@ void EcalTrigPrimProducer::fillDescriptions(edm::ConfigurationDescriptions &desc
   // 'binOfMaximum' was missing. This replicates that behavior.
   desc.add<int>("binOfMaximum", -1)->setComment(kComment);
   desc.add<std::string>("oddWeightsTxtFile",""); // Need this added in order to avoid throwing of exceptions when validating oddWeightsTxtFile. Validation will throw an exception if a parameter is in the configuration that is not in the description
+  desc.add<bool>("TPinfoPrintout", false);
   descriptions.addDefault(desc);
 }

@@ -26,13 +26,14 @@ private:
   bool debug_; 
   int setInput(int input, int fgvb);
   void process();
+  bool TPinfoPrintout_; 
 
   int processedOutput_;
   int processedFgvbOutput_;
 
 public:
   EcalFenixAmplitudeFilter();
-  EcalFenixAmplitudeFilter(bool debug);
+  EcalFenixAmplitudeFilter(bool TPinfoPrintout);
   virtual ~EcalFenixAmplitudeFilter();
   virtual void process(std::vector<int> &addout,
                        std::vector<int> &output,

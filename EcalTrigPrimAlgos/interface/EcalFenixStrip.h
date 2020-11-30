@@ -38,7 +38,8 @@ public:
                  bool famos,
                  int maxNrSamples,
                  int nbMaxXtals,
-                 std::string oddWeightsTxtFile);
+                 std::string oddWeightsTxtFile,
+                 bool TPinfoPrintout);
   virtual ~EcalFenixStrip();
 
 private:
@@ -48,6 +49,7 @@ private:
   bool famos_;
   int nbMaxXtals_;
   bool oddWeightsTxtFile_; 
+  bool TPinfoPrintout_;
 
 
 

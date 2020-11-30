@@ -11,7 +11,8 @@ simEcalTriggerPrimitiveDigis = cms.EDProducer("EcalTrigPrimProducer",
     TcpOutput = cms.bool(False),
     Debug = cms.bool(False),
     Label = cms.string('simEcalUnsuppressedDigis'),
-    oddWeightsTxtFile = cms.string('')
+    oddWeightsTxtFile = cms.string(''),
+    TPinfoPrintout = cms.bool(False)
 )
 
 # print "Ecal debug: leaving ecalTriggerPrimitiveDigis_readDBOffline_cfi.py"

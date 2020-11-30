@@ -50,6 +50,7 @@ private:
   bool tcpFormat_;
   bool debug_;
   std::string oddWeightsTxtFile_; 
+  bool TPinfoPrintout_;
   bool famos_;
   edm::EDGetTokenT<EBDigiCollection> tokenEB_;
   edm::EDGetTokenT<EEDigiCollection> tokenEE_;

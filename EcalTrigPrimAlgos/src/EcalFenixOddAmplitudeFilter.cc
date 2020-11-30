@@ -7,7 +7,7 @@
 #include <string>
 #include <fstream>
 
-EcalFenixOddAmplitudeFilter::EcalFenixOddAmplitudeFilter(bool debug, std::string oddWeightsTxtFile) : inputsAlreadyIn_(0), stripid_{0}, shift_(6), debug_(debug), oddWeightsTxtFile_(oddWeightsTxtFile) {}
+EcalFenixOddAmplitudeFilter::EcalFenixOddAmplitudeFilter(bool TPinfoPrintout, std::string oddWeightsTxtFile) : inputsAlreadyIn_(0), stripid_{0}, shift_(6), TPinfoPrintout_(TPinfoPrintout), oddWeightsTxtFile_(oddWeightsTxtFile) {}
 
 
 EcalFenixOddAmplitudeFilter::~EcalFenixOddAmplitudeFilter() {}
@@ -47,7 +47,7 @@ void EcalFenixOddAmplitudeFilter::process(std::vector<int> &addout,
 
   for (unsigned int i = 0; i < addout.size(); i++) {
     if (i>=4){
-      if(debug_) std::cout<<i<<std::dec;//by  RK // need to add the boolean
+      if(TPinfoPrintout_) std::cout<<i<<std::dec;//by  RK // need to add the boolean
     } 
     setInput(addout[i], fgvbIn[i]);
     process();
@@ -76,17 +76,17 @@ void EcalFenixOddAmplitudeFilter::process() {
   int output = 0;
   int fgvbInt = 0;
 
-  if(debug_) std::cout<<" "<<stripid_;
+  if(TPinfoPrintout_) std::cout<<" "<<stripid_;
   for (int i = 0; i < 5; i++) {
     output += (weights_[i] * buffer_[i]) >> shift_;
-    if(debug_) std::cout<<" "<<output<<std::dec;// by RK 
+    if(TPinfoPrintout_) std::cout<<" "<<output<<std::dec;// by RK 
     if ((fgvbBuffer_[i] == 1 && i == 3) || fgvbInt == 1) {
       fgvbInt = 1;
     }
   }
 
   // by RK 
-  if(debug_){
+  if(TPinfoPrintout_){
     for (int i = 0; i < 5; i++) {
       std::cout<<" "<<weights_[i]<<std::dec;}
     for (int i = 0; i < 5; i++) {
@@ -96,18 +96,19 @@ void EcalFenixOddAmplitudeFilter::process() {
     for (int i = 0; i < 5; i++) {
       std::cout<<" "<<(weights_[i] * buffer_[i])<<std::dec;    
     }
+    std::cout << " ODD";
     std::cout<<std::endl;
       // -- by RK 
   }
 
-  if(debug_){
-    std::cout << "*********" << std::endl; 
-    std::cout << "Weights" << std::endl;
-    for(int i = 0; i < 5; i++){
-      std::cout << "Weight " << i << " = " << weights_[i] << std::endl; 
-    }
-    std::cout << "*********" << std::endl; 
-  }
+  // if(debug_){
+  //   std::cout << "*********" << std::endl; 
+  //   std::cout << "Weights" << std::endl;
+  //   for(int i = 0; i < 5; i++){
+  //     std::cout << "Weight " << i << " = " << weights_[i] << std::endl; 
+  //   }
+  //   std::cout << "*********" << std::endl; 
+  // }
   
   if (output < 0)
     output = 0;

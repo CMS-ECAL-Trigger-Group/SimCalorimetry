@@ -15,14 +15,15 @@ EcalFenixStrip::EcalFenixStrip(const edm::EventSetup &setup,
                                bool famos,
                                int maxNrSamples,
                                int nbMaxXtals,
-                               std::string oddWeightsTxtFile)
+                               std::string oddWeightsTxtFile,
+                               bool TPinfoPrintout)
     : theMapping_(theMapping), debug_(debug), famos_(famos), nbMaxXtals_(nbMaxXtals) {
   linearizer_.resize(nbMaxXtals_);
   for (int i = 0; i < nbMaxXtals_; i++)
     linearizer_[i] = new EcalFenixLinearizer(famos_);
   adder_ = new EcalFenixEtStrip();
-  amplitude_filter_ = new EcalFenixAmplitudeFilter(debug);
-  oddAmplitude_filter_ = new EcalFenixOddAmplitudeFilter(debug,oddWeightsTxtFile); 
+  amplitude_filter_ = new EcalFenixAmplitudeFilter(TPinfoPrintout);
+  oddAmplitude_filter_ = new EcalFenixOddAmplitudeFilter(TPinfoPrintout,oddWeightsTxtFile); 
   peak_finder_ = new EcalFenixPeakFinder();
   fenixFormatterEB_ = new EcalFenixStripFormatEB();
   fenixFormatterEE_ = new EcalFenixStripFormatEE();
