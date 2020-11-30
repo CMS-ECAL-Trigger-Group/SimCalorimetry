@@ -33,6 +33,7 @@
 
 #include <map>
 #include <utility>
+#include <string>
 
 /** Main Algo for Ecal trigger primitives. */
 
@@ -47,7 +48,7 @@ class EcalElectronicsMapping;
 class EcalTrigPrimFunctionalAlgo {
 public:
   explicit EcalTrigPrimFunctionalAlgo(
-      const edm::EventSetup &setup, int binofmax, bool tcpFormat, bool barrelOnly, bool debug, bool famos);
+      const edm::EventSetup &setup, int binofmax, bool tcpFormat, bool barrelOnly, bool debug, bool famos, std::string oddWeightsTxtFile);
 
   virtual ~EcalTrigPrimFunctionalAlgo();
 
@@ -138,6 +139,7 @@ private:
   bool barrelOnly_;
   bool debug_;
   bool famos_;
+  std::string oddWeightsTxtFile_; 
 
   static const unsigned int nrSamples_;        // nr samples to write, should not be changed since by
                                                // convention the size means that it is coming from simulation

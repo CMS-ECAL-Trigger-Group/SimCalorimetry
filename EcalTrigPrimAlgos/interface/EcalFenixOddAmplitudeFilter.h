@@ -3,14 +3,15 @@
 
 #include <cstdint>
 #include <vector>
+#include <string>
 
 class EcalTPGWeightIdMap;
 class EcalTPGWeightGroup;
 
 /**
  \ class EcalFenixOddAmplitudeFilter
-The purpose of this class is to implement the second (odd) ECAL FENIX amplitude filter 
- \brief calculates .... for Fenix strip, barrel
+ *  The purpose of this class is to implement the second (odd) ECAL FENIX amplitude filter 
+ *  Derived from SimCalorimetry/EcalTrigPrimAlgos/src/EcalFenixAmplitudeFilter.cc, interface/EcalFenixAmplitudeFilter.h
  *  input: 18 bits
  *  output: 18 bits
  *
@@ -25,6 +26,7 @@ private:
   int weights_[5];
   int shift_;
   bool debug_; 
+  std::string oddWeightsTxtFile_; // When including odd weights via a text file 
   int setInput(int input, int fgvb);
   void process();
 
@@ -33,7 +35,7 @@ private:
 
 public:
   EcalFenixOddAmplitudeFilter();
-  EcalFenixOddAmplitudeFilter(bool debug);
+  EcalFenixOddAmplitudeFilter(bool debug, std::string oddWeightsTxtFile);
   virtual ~EcalFenixOddAmplitudeFilter();
   virtual void process(std::vector<int> &addout,
                        std::vector<int> &output,

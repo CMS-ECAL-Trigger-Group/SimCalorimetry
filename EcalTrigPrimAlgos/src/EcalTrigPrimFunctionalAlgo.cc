@@ -40,6 +40,7 @@
 
 #include <TMath.h>
 #include <TTree.h>
+#include <string> 
 
 const unsigned int EcalTrigPrimFunctionalAlgo::nrSamples_ = 5;  // to be written
 const unsigned int EcalTrigPrimFunctionalAlgo::maxNrSamplesOut_ = 10;
@@ -49,12 +50,13 @@ const unsigned int EcalTrigPrimFunctionalAlgo::maxNrTPs_ = 2448;  // FIXME??
 //----------------------------------------------------------------------
 
 EcalTrigPrimFunctionalAlgo::EcalTrigPrimFunctionalAlgo(
-    const edm::EventSetup &setup, int binofmax, bool tcpFormat, bool barrelOnly, bool debug, bool famos)
+    const edm::EventSetup &setup, int binofmax, bool tcpFormat, bool barrelOnly, bool debug, bool famos, std::string oddWeightsTxtFile)
     : binOfMaximum_(binofmax),
       tcpFormat_(tcpFormat),
       barrelOnly_(barrelOnly),
       debug_(debug),
-      famos_(famos)
+      famos_(famos),
+      oddWeightsTxtFile_(oddWeightsTxtFile)
 
 {
   if (famos_)
@@ -80,7 +82,7 @@ void EcalTrigPrimFunctionalAlgo::init(const edm::EventSetup &setup) {
   theMapping_ = ecalmapping.product();
 
   // create main sub algos
-  estrip_ = new EcalFenixStrip(setup, theMapping_, debug_, famos_, maxNrSamples_, nbMaxXtals_);
+  estrip_ = new EcalFenixStrip(setup, theMapping_, debug_, famos_, maxNrSamples_, nbMaxXtals_, oddWeightsTxtFile_);
   etcp_ = new EcalFenixTcp(setup, tcpFormat_, debug_, famos_, binOfMaximum_, maxNrSamples_, nbMaxStrips_);
 
   // initialise data structures

@@ -6,6 +6,7 @@
 #include "Geometry/EcalMapping/interface/EcalElectronicsMapping.h"
 
 #include <DataFormats/EcalDigi/interface/EcalTriggerPrimitiveSample.h>
+#include <string>
 
 //-------------------------------------------------------------------------------------
 EcalFenixStrip::EcalFenixStrip(const edm::EventSetup &setup,
@@ -13,13 +14,15 @@ EcalFenixStrip::EcalFenixStrip(const edm::EventSetup &setup,
                                bool debug,
                                bool famos,
                                int maxNrSamples,
-                               int nbMaxXtals)
+                               int nbMaxXtals,
+                               std::string oddWeightsTxtFile)
     : theMapping_(theMapping), debug_(debug), famos_(famos), nbMaxXtals_(nbMaxXtals) {
   linearizer_.resize(nbMaxXtals_);
   for (int i = 0; i < nbMaxXtals_; i++)
     linearizer_[i] = new EcalFenixLinearizer(famos_);
   adder_ = new EcalFenixEtStrip();
   amplitude_filter_ = new EcalFenixAmplitudeFilter(debug);
+  oddAmplitude_filter_ = new EcalFenixOddAmplitudeFilter(debug,oddWeightsTxtFile); 
   peak_finder_ = new EcalFenixPeakFinder();
   fenixFormatterEB_ = new EcalFenixStripFormatEB();
   fenixFormatterEE_ = new EcalFenixStripFormatEE();
@@ -47,6 +50,7 @@ EcalFenixStrip::~EcalFenixStrip() {
     delete linearizer_[i];
   delete adder_;
   delete amplitude_filter_;
+  delete oddAmplitude_filter_; 
   delete peak_finder_;
   delete fenixFormatterEB_;
   delete fenixFormatterEE_;
@@ -64,18 +68,18 @@ void EcalFenixStrip::process_part2_barrel(uint32_t stripid,
   // call formatter
   this->getFormatterEB()->setParameters(stripid, ecaltpgSlidW);
   // Want to try setting Odd weights here 
-  
+
 
   this->getFormatterEB()->process(fgvb_out_, peak_out_, filt_out_, format_out_);
   // this is a test:
-  if (debug_) {
-    std::cout << "output of formatter is a vector of size: " << format_out_.size() << std::endl;
-    std::cout << "value : " << std::endl;
-    for (unsigned int i = 0; i < format_out_.size(); i++) {
-      std::cout << " " << format_out_[i];
-    }
-    std::cout << std::endl;
-  }
+  // if (debug_) {
+  //   std::cout << "output of formatter is a vector of size: " << format_out_.size() << std::endl;
+  //   std::cout << "value : " << std::endl;
+  //   for (unsigned int i = 0; i < format_out_.size(); i++) {
+  //     std::cout << " " << format_out_[i];
+  //   }
+  //   std::cout << std::endl;
+  // }
   return;
 }
 //-------------------------------------------------------------------------------------
@@ -93,16 +97,16 @@ void EcalFenixStrip::process_part2_endcap(uint32_t stripid,
   this->getFormatterEE()->process(fgvb_out_, peak_out_, filt_out_, format_out_);
 
   // this is a test:
-  if (debug_) {
-    std::cout << "output of formatter is a vector of size: " << format_out_.size() << std::endl;
-    std::cout << "value = " << std::endl;  // DP FORMATTED
-    for (unsigned int i = 0; i < format_out_.size(); i++) {
-      std::cout << " " << std::dec << format_out_[i] << std::endl;   // DP FORMATTED
-      if (format_out_[i]>100) mydebug_=true; // DP ADDED
-    }
-    std::cout << std::endl;
-    if (mydebug_) std::cout << "MYDEBUG=TRUE " <<a<< std::endl;  // DP ADDED
-  }
+  // if (debug_) {
+  //   std::cout << "output of formatter is a vector of size: " << format_out_.size() << std::endl;
+  //   std::cout << "value = " << std::endl;  // DP FORMATTED
+  //   for (unsigned int i = 0; i < format_out_.size(); i++) {
+  //     std::cout << " " << std::dec << format_out_[i] << std::endl;   // DP FORMATTED
+  //     if (format_out_[i]>100) mydebug_=true; // DP ADDED
+  //   }
+  //   std::cout << std::endl;
+  //   if (mydebug_) std::cout << "MYDEBUG=TRUE " <<a<< std::endl;  // DP ADDED
+  // }
 
   return;
 }

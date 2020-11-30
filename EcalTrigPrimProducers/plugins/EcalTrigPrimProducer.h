@@ -49,6 +49,7 @@ private:
   bool barrelOnly_;
   bool tcpFormat_;
   bool debug_;
+  std::string oddWeightsTxtFile_; 
   bool famos_;
   edm::EDGetTokenT<EBDigiCollection> tokenEB_;
   edm::EDGetTokenT<EEDigiCollection> tokenEE_;

@@ -2,6 +2,7 @@
 #define ECAL_FENIXSTRIP_H
 
 #include <SimCalorimetry/EcalTrigPrimAlgos/interface/EcalFenixAmplitudeFilter.h>
+#include <SimCalorimetry/EcalTrigPrimAlgos/interface/EcalFenixOddAmplitudeFilter.h>
 #include <SimCalorimetry/EcalTrigPrimAlgos/interface/EcalFenixEtStrip.h>
 #include <SimCalorimetry/EcalTrigPrimAlgos/interface/EcalFenixLinearizer.h>
 #include <SimCalorimetry/EcalTrigPrimAlgos/interface/EcalFenixPeakFinder.h>
@@ -13,6 +14,7 @@
 #include "Geometry/EcalMapping/interface/EcalElectronicsMapping.h"
 #include <DataFormats/EcalDigi/interface/EBDataFrame.h>
 #include <DataFormats/EcalDigi/interface/EEDataFrame.h>
+#include <string>
 
 class EBDataFrame;
 class EcalTriggerPrimitiveSample;
@@ -35,7 +37,8 @@ public:
                  bool debug,
                  bool famos,
                  int maxNrSamples,
-                 int nbMaxXtals);
+                 int nbMaxXtals,
+                 std::string oddWeightsTxtFile);
   virtual ~EcalFenixStrip();
 
 private:
@@ -44,12 +47,14 @@ private:
   bool debug_;
   bool famos_;
   int nbMaxXtals_;
+  bool oddWeightsTxtFile_; 
 
 
 
   std::vector<EcalFenixLinearizer *> linearizer_;
 
   EcalFenixAmplitudeFilter *amplitude_filter_;
+  EcalFenixOddAmplitudeFilter *oddAmplitude_filter_;
 
   EcalFenixPeakFinder *peak_finder_;
 
@@ -127,6 +132,7 @@ public:
   EcalFenixLinearizer *getLinearizer(int i) const { return linearizer_[i]; }
   EcalFenixEtStrip *getAdder() const { return adder_; }
   EcalFenixAmplitudeFilter *getFilter() const { return amplitude_filter_; }
+  EcalFenixOddAmplitudeFilter *getOddFilter() const { return oddAmplitude_filter_; }
   EcalFenixPeakFinder *getPeakFinder() const { return peak_finder_; }
 
   EcalFenixStripFormatEB *getFormatterEB() const { return fenixFormatterEB_; }
@@ -291,6 +297,12 @@ public:
       // call amplitudefilter
       this->getFilter()->setParameters(stripid, ecaltpgWeightMap, ecaltpgWeightGroup);
       this->getFilter()->process(add_out_, filt_out_, fgvb_out_temp_, fgvb_out_);
+
+      // call odd amplitudefilter 
+      this->getOddFilter()->setParameters(stripid, ecaltpgWeightMap, ecaltpgWeightGroup);
+      this->getOddFilter()->process(add_out_, filt_out_, fgvb_out_temp_, fgvb_out_);      
+
+
       
       if (debug_) {
         std::cout << "output of filter is a vector of size: " << std::dec << filt_out_.size() << std::endl;
