@@ -43,6 +43,17 @@ EcalFenixStrip::EcalFenixStrip(const edm::EventSetup &setup,
   format_out_.resize(maxNrSamples);
   fgvb_out_.resize(maxNrSamples);
   fgvb_out_temp_.resize(maxNrSamples);
+
+  // prepare data storage for odd filter 
+  odd_lin_out_.resize(nbMaxXtals_);
+  for (int i = 0; i < 5; i++)
+    odd_lin_out_[i] = v;  
+  odd_add_out_.resize(maxNrSamples);
+  odd_filt_out_.resize(maxNrSamples); 
+  odd_peak_out_.resize(maxNrSamples);
+  // odd_format_out_.resize(maxNrSamples);
+  odd_fgvb_out_.resize(maxNrSamples);
+  odd_fgvb_out_temp_.resize(maxNrSamples);   
 }
 
 //-------------------------------------------------------------------------------------
@@ -68,10 +79,12 @@ void EcalFenixStrip::process_part2_barrel(uint32_t stripid,
 
   // call formatter
   this->getFormatterEB()->setParameters(stripid, ecaltpgSlidW);
-  // Want to try setting Odd weights here 
-
 
   this->getFormatterEB()->process(fgvb_out_, peak_out_, filt_out_, format_out_);
+
+  // Duplicate for Odd filter 
+  // this->getFormatterEB()->process(odd_fgvb_out_, odd_peak_out_, odd_filt_out_, odd_format_out_);
+
   // this is a test:
   // if (debug_) {
   //   std::cout << "output of formatter is a vector of size: " << format_out_.size() << std::endl;
@@ -94,8 +107,10 @@ void EcalFenixStrip::process_part2_endcap(uint32_t stripid,
 
   // call formatter
   this->getFormatterEE()->setParameters(stripid, ecaltpgSlidW, ecaltpgStripStatus);
-
   this->getFormatterEE()->process(fgvb_out_, peak_out_, filt_out_, format_out_);
+
+  // Duplicate for odd filter 
+  // this->getFormatterEE()->process(odd_fgvb_out_, odd_peak_out_, odd_filt_out_, odd_format_out_);
 
   // this is a test:
   // if (debug_) {

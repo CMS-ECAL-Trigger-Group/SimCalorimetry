@@ -3,11 +3,11 @@
  *
  * EcalTrigPrimProducer produces a EcalTrigPrimDigiCollection
  * The barrel code does a detailed simulation
- * The code for the endcap is simulated in a rough way, due to missing  strip
+ * The code for the endcap is simulated in a rough way, due to missing strip
  geometry
  *
  *
- * \author Ursula Berthon, Stephanie Baffioni,  LLR Palaiseau
+ * \author Ursula Berthon, Stephanie Baffioni, LLR Palaiseau
  *
  * \version   1st Version may 2006
  * \version   2nd Version jul 2006

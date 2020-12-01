@@ -1,11 +1,11 @@
 /** \class EcalTrigPrimFunctionalAlgo
  *
  * EcalTrigPrimFunctionalAlgo is the main algorithm class for TPG
- * It coordinates all the aother algorithms
+ * It coordinates all the other algorithms
  * Structure is very close to electronics
  *
  *
- * \author Ursula Berthon, Stephanie Baffioni,  LLR Palaiseau
+ * \author Ursula Berthon, Stephanie Baffioni, LLR Palaiseau
  *
  * \version   1st Version may 2006
  * \version   2nd Version jul 2006

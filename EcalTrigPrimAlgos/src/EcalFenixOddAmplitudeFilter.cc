@@ -100,15 +100,6 @@ void EcalFenixOddAmplitudeFilter::process() {
     std::cout<<std::endl;
       // -- by RK 
   }
-
-  // if(debug_){
-  //   std::cout << "*********" << std::endl; 
-  //   std::cout << "Weights" << std::endl;
-  //   for(int i = 0; i < 5; i++){
-  //     std::cout << "Weight " << i << " = " << weights_[i] << std::endl; 
-  //   }
-  //   std::cout << "*********" << std::endl; 
-  // }
   
   if (output < 0)
     output = 0;
@@ -150,27 +141,10 @@ void EcalFenixOddAmplitudeFilter::setParameters(uint32_t raw,
     //   // std::cout << " " << peakFlag_[i] << std::endl;
     // }
 
-    // std::cout <<"************************** SETTING ODD WEIGHTS ********************" <<std::endl; 
+    // Setting Odd Weights via input text file here 
     std::fstream oddWeightsLine(oddWeightsTxtFile_, std::ios_base::in);
     oddWeightsLine >> weights_[0] >> weights_[1] >> weights_[2] >> weights_[3] >> weights_[4];  
-    // float a; 
-    // int oddWeight_n = 0;
-    // while(oddWeightsLine >> a){
-      // weights_[oddWeights_n] = ;
-      // oddWeight_n += 1;
-    // }
-    // ifstream oddWeightsLine(oddWeightsTxtFile_);
-    // oddWeightsTxtFile_;
-    // weights_[0] = -100; 
-    // weights_[1] = -100; 
-    // weights_[2] = 100;
-    // weights_[3] = 100;
-    // weights_[4] = 100; 
 
-
-
-
-    // std::cout << std::endl;
   } else
     edm::LogWarning("EcalTPG") << " could not find EcalTPGGroupsMap entry for " << raw;
 }
