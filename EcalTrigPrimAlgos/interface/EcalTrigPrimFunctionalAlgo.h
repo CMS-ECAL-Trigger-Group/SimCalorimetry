@@ -48,7 +48,7 @@ class EcalElectronicsMapping;
 class EcalTrigPrimFunctionalAlgo {
 public:
   explicit EcalTrigPrimFunctionalAlgo(
-      const edm::EventSetup &setup, int binofmax, bool tcpFormat, bool barrelOnly, bool debug, bool famos, std::string oddWeightsTxtFile, bool TPinfoPrintout);
+      const edm::EventSetup &setup, int binofmax, bool tcpFormat, bool barrelOnly, bool debug, bool famos, std::string oddWeightsTxtFile, bool TPinfoPrintout, std::string TPmode);
 
   virtual ~EcalTrigPrimFunctionalAlgo();
 
@@ -141,6 +141,7 @@ private:
   bool famos_;
   std::string oddWeightsTxtFile_; 
   bool TPinfoPrintout_; 
+  std::string TPmode_;
 
   static const unsigned int nrSamples_;        // nr samples to write, should not be changed since by
                                                // convention the size means that it is coming from simulation

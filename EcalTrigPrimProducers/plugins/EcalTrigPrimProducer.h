@@ -51,6 +51,7 @@ private:
   bool debug_;
   std::string oddWeightsTxtFile_; 
   bool TPinfoPrintout_;
+  std::string TPmode_;
   bool famos_;
   edm::EDGetTokenT<EBDigiCollection> tokenEB_;
   edm::EDGetTokenT<EEDigiCollection> tokenEE_;

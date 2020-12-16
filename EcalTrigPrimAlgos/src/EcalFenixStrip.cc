@@ -16,8 +16,9 @@ EcalFenixStrip::EcalFenixStrip(const edm::EventSetup &setup,
                                int maxNrSamples,
                                int nbMaxXtals,
                                std::string oddWeightsTxtFile,
-                               bool TPinfoPrintout)
-    : theMapping_(theMapping), debug_(debug), famos_(famos), nbMaxXtals_(nbMaxXtals) {
+                               bool TPinfoPrintout,
+                               std::string TPmode)
+    : theMapping_(theMapping), debug_(debug), famos_(famos), nbMaxXtals_(nbMaxXtals), TPmode_(TPmode) {
   linearizer_.resize(nbMaxXtals_);
   for (int i = 0; i < nbMaxXtals_; i++)
     linearizer_[i] = new EcalFenixLinearizer(famos_);

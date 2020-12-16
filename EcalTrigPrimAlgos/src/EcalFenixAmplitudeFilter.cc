@@ -77,7 +77,7 @@ void EcalFenixAmplitudeFilter::process() {
   if(TPinfoPrintout_) std::cout<<" "<<stripid_;
   for (int i = 0; i < 5; i++) {
     output += (weights_[i] * buffer_[i]) >> shift_;
-    if(TPinfoPrintout_) std::cout<<" "<<output<<std::dec;// by RK 
+    // if(TPinfoPrintout_) std::cout<<" "<<output<<std::dec; // Removing this because the information can be deduced from the 5 digis and 5 weights 
     if ((fgvbBuffer_[i] == 1 && i == 3) || fgvbInt == 1) {
       fgvbInt = 1;
     }
@@ -90,10 +90,10 @@ void EcalFenixAmplitudeFilter::process() {
     for (int i = 0; i < 5; i++) {
       std::cout<<" "<<weights_[i]/64.0<<std::dec;}
     for (int i = 0; i < 5; i++) {
-      std::cout<<" "<<buffer_[i]<<std::dec;}
-    for (int i = 0; i < 5; i++) {
-      std::cout<<" "<<(weights_[i] * buffer_[i])<<std::dec;    
-    }
+      std::cout<<" "<<buffer_[i]<<std::dec;} // digis 
+    // for (int i = 0; i < 5; i++) {
+      // std::cout<<" "<<(weights_[i] * buffer_[i])<<std::dec; // Removing this because the information can be deduced from the 5 digis and 5 weights   
+    // }
     std::cout << " EVEN";
     std::cout<<std::endl;
       // -- by RK 

@@ -39,7 +39,8 @@ public:
                  int maxNrSamples,
                  int nbMaxXtals,
                  std::string oddWeightsTxtFile,
-                 bool TPinfoPrintout);
+                 bool TPinfoPrintout,
+                 std::string TPmode);
   virtual ~EcalFenixStrip();
 
 private:
@@ -47,11 +48,9 @@ private:
 
   bool debug_;
   bool famos_;
-  int nbMaxXtals_;
-  bool oddWeightsTxtFile_; 
+  int nbMaxXtals_; 
   bool TPinfoPrintout_;
-
-
+  std::string TPmode_;
 
   std::vector<EcalFenixLinearizer *> linearizer_;
 
@@ -97,10 +96,7 @@ private:
 
   bool identif_;
   bool mydebug_;   // DP ADDED
-  // for double weights
   int a;
-  // --ends here  
-
   
 public:
   void setPointers(const EcalTPGPedestals *ecaltpPed,
@@ -158,6 +154,7 @@ public:
   // ==============================================================
   // void process(const edm::EventSetup &setup, std::vector<EBDataFrame> &samples, int nrXtals, std::vector<int> &out, bool OddFilter) {
   void process(const edm::EventSetup &setup, std::vector<EBDataFrame> &samples, int nrXtals, std::vector<int> &out) {
+    
     // now call processing
     if (samples.empty()) {
       std::cout << " Warning: 0 size vector found in EcalFenixStripProcess!!!!!" << std::endl;
@@ -179,8 +176,6 @@ public:
       std::cout<<std::endl;
     }
   }
-    //-- by RK
-
   
     identif_ = getFGVB()->getMissedStripFlag();
 
@@ -240,10 +235,8 @@ public:
                      const EcalTPGCrystalStatus *ecaltpBadX) {
     if (debug_)
       std::cout << "\n\nEcalFenixStrip input is a vector of size: " << nrXtals << std::endl;
-
     
-    
-    
+    if(debug_) std::cout << "TPmode_*************** " << TPmode_ << std::endl; 
 
     // loop over crystals
     for (int cryst = 0; cryst < nrXtals; cryst++) {
