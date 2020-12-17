@@ -17,5 +17,4 @@ simEcalTriggerPrimitiveDigis = cms.EDProducer("EcalTrigPrimProducer",
 )
 
 # print "Ecal debug: leaving ecalTriggerPrimitiveDigis_readDBOffline_cfi.py"
-
 # print "simEcalTriggerPrimitiveDigis",simEcalTriggerPrimitiveDigis

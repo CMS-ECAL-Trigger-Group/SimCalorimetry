@@ -76,7 +76,6 @@ EcalTrigPrimProducer::EcalTrigPrimProducer(const edm::ParameterSet &iConfig)
       binOfMaximum_(iConfig.getParameter<int>("binOfMaximum")),
       fillBinOfMaximumFromHistory_(-1 == binOfMaximum_) {
 
-  // std::cout << "***TPmode_: " << TPmode_ << std::endl; 
   // register your products
   produces<EcalTrigPrimDigiCollection>();
   if (tcpFormat_)
